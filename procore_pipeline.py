@@ -112,7 +112,7 @@ def run_pipeline():
         engine = create_engine(db_uri, connect_args={'sslmode': 'require'})
         
         # Push the master table
-        master_df.to_sql('sandbox_budget_master', engine, if_exists='replace', index=False)
+        master_df.to_sql('procore_budgets_master', engine, if_exists='replace', index=False)
         logging.info("SUCCESS! Enterprise pipeline execution complete.")
 
     except Exception as e:
