@@ -20,9 +20,9 @@ COMPANY_ID = os.getenv('PROCORE_COMPANY_ID')
 DB_PASSWORD = os.getenv('SUPABASE_DB_PASSWORD')
 POOLER_HOST = os.getenv('SUPABASE_POOLER_HOST')
 
-# Routing (Easy to swap to production later)
-BASE_API_URL = 'https://sandbox.procore.com'
-AUTH_URL = f'{BASE_API_URL}/oauth/token'
+# --- LIVE PRODUCTION ROUTING ---
+BASE_API_URL = 'https://api.procore.com'
+AUTH_URL = 'https://login.procore.com/oauth/token'
 
 # --- 2. CORE FUNCTIONS ---
 
