@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="margin:0">
+<title>FP MCP Apps Mockups</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column of scenes; each scene is a caption above a wireframe of the Claude window (chat left, FP view right). */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --surface-2:#f5f7f9; --ink:#16202b; --ink-2:#4a5868; --ink-3:#7b8794; --line:#d5dbe2;
+  --accent:#c94a17; --act:#2b68c5; --act-bg:#e3edfb;
+  --ok:#2a7549; --ok-bg:#dcf0e3; --warn:#8a5f00; --warn-bg:#fbedc6; --crit:#ad3328; --crit-bg:#f8dbd7; --room-bg:#e1ebf7;
+  --display:"Space Grotesk",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12171d; --surface:#1b222b; --surface-2:#232c37; --ink:#e8edf2; --ink-2:#b3bdc8; --ink-3:#8793a0; --line:#34414f;
+  --accent:#ff8a57; --act:#86b4f6; --act-bg:#1e3350;
+  --ok:#7fd09b; --ok-bg:#1f3d2b; --warn:#e6c15a; --warn-bg:#43371a; --crit:#f29488; --crit-bg:#4a2420; --room-bg:#1f3147; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#12171d; --surface:#1b222b; --surface-2:#232c37; --ink:#e8edf2; --ink-2:#b3bdc8; --ink-3:#8793a0; --line:#34414f;
+  --accent:#ff8a57; --act:#86b4f6; --act-bg:#1e3350;
+  --ok:#7fd09b; --ok-bg:#1f3d2b; --warn:#e6c15a; --warn-bg:#43371a; --crit:#f29488; --crit-bg:#4a2420; --room-bg:#1f3147; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;
+  padding-block:40px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,5vw,40px);letter-spacing:-.01em}
+h2{font-size:22px}
+p{margin:0;max-width:66ch}
+.lede{font-size:17px;color:var(--ink-2)}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+header{display:flex;flex-direction:column;gap:14px}
+.note{border-left:3px solid var(--accent);padding:2px 0 2px 14px;color:var(--ink-2)}
+
+.scene{display:flex;flex-direction:column;gap:14px}
+.cap{display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:11px;padding:2px 8px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);background:var(--surface)}
+.chip.gated{border-color:var(--warn);color:var(--warn);background:var(--warn-bg)}
+.chip.open{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+
+/* wireframe window */
+.win{border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.bar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.bar i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+.bar span{margin-left:6px}
+.body{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);min-height:330px}
+.body.solo{grid-template-columns:minmax(0,1fr)}
+.chat{display:flex;flex-direction:column;gap:10px;padding:16px;min-width:0}
+.msg{max-width:92%;font-size:13.5px;line-height:1.45}
+.msg.u{align-self:flex-end;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.tool{align-self:flex-start;font-family:var(--mono);font-size:11px;color:var(--act);background:var(--act-bg);border-radius:6px;padding:3px 8px}
+.composer{margin-top:auto;border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:13px;color:var(--ink-3);background:var(--surface)}
+.composer.filled{color:var(--ink)}
+.caution{font-size:11.5px;color:var(--warn);background:var(--warn-bg);border-radius:6px;padding:4px 8px;margin-top:auto}
+.caution + .composer{margin-top:0}
+.panel{border-left:1px solid var(--line);background:var(--surface-2);display:flex;flex-direction:column;min-width:0}
+.phead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line);font-weight:600;font-size:13px}
+.phead .label{font-weight:400}
+.pbody{padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.tabs{display:flex;flex-wrap:wrap;gap:4px}
+.tab{font-size:12px;padding:4px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2)}
+.tab.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.byclaude{outline:2px solid var(--act);outline-offset:2px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums}
+th{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.crit{background:var(--crit-bg);color:var(--crit)}
+.btn{font:600 12.5px var(--body);padding:7px 12px;border-radius:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn.pri{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fine{font-size:11.5px;color:var(--ink-3)}
+
+/* form */
+.field{display:flex;flex-direction:column;gap:3px;min-width:0}
+.field .box{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:6px 9px;font-size:12.5px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+
+/* drawing */
+.sheet{border:1px solid var(--line);background:var(--surface);border-radius:6px}
+.sheet svg{display:block;width:100%;height:auto}
+.sheet text{font-family:var(--mono);font-size:9px;fill:var(--ink-3)}
+
+/* staffing grid */
+.heat{display:grid;grid-template-columns:4.6rem repeat(8,minmax(34px,1fr));gap:3px;min-width:400px;font-size:11px;font-variant-numeric:tabular-nums}
+.heat div{padding:5px 2px;text-align:center;border-radius:4px}
+.heat .n{text-align:left;font-weight:600;font-size:12px;padding-left:0}
+.heat .h{font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.g{background:var(--ok-bg);color:var(--ok)} .y{background:var(--warn-bg);color:var(--warn)} .r{background:var(--crit-bg);color:var(--crit)} .lo{background:var(--room-bg);color:var(--ink-2)}
+.push{outline:2px dashed var(--accent);outline-offset:-2px}
+.card{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-size:12.5px}
+.opt{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:5px 8px;border:1px solid var(--line);border-radius:6px}
+.opt.sel{border-color:var(--accent)}
+
+/* letter + photos */
+.paper{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;font-size:12px;display:flex;flex-direction:column;gap:6px}
+.paper b{font-family:var(--display)}
+.ph{display:flex;gap:6px}
+.ph span{flex:1;aspect-ratio:4/3;border-radius:4px;background:repeating-linear-gradient(135deg,var(--line) 0 6px,var(--surface-2) 6px 12px);border:1px solid var(--line)}
+.ph span.sel{outline:2px solid var(--act);outline-offset:1px}
+.dialog{border:1px solid var(--ink-3);border-radius:10px;background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:8px;font-size:12.5px}
+
+/* pinned + phone */
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:start}
+.side{display:grid;grid-template-columns:150px minmax(0,1fr);min-height:230px}
+.rail{border-right:1px solid var(--line);background:var(--surface-2);padding:12px 10px;display:flex;flex-direction:column;gap:5px;font-size:12.5px}
+.rail .it{padding:4px 8px;border-radius:6px;color:var(--ink-2)}
+.rail .it.pin{background:var(--act-bg);color:var(--act);font-weight:600}
+.tiles{padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;align-content:start}
+.tile{border:1px solid var(--line);border-radius:8px;padding:10px;font-size:12px;background:var(--surface)}
+.tile small{display:block;color:var(--ink-3);font-size:10.5px}
+.phone{width:min(250px,100%);margin:0 auto;border:2px solid var(--ink-3);border-radius:28px;padding:16px 10px;background:var(--surface);display:flex;flex-direction:column;gap:9px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px}
+ol,ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;max-width:66ch}
+section.text{display:flex;flex-direction:column;gap:14px}
+@media (max-width:720px){
+  .body{grid-template-columns:minmax(0,1fr)}
+  .panel{border-left:0;border-top:1px solid var(--line)}
+  .side{grid-template-columns:minmax(0,1fr)} .rail{border-right:0;border-bottom:1px solid var(--line)}
+}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="label">FP MCP &middot; MCP Apps preview &middot; November 2026</span>
+  <h1>What FP MCP could look like inside Claude</h1>
+  <p class="lede">Today the connector answers in text and hands back links to dashboard pages. With MCP Apps, the same tools can open a working view beside the conversation, and Claude can change what that view shows.</p>
+  <p class="note">These are wireframes with invented sample data. They show layout and behaviour only. No project, person or number here is real, and the real Claude interface will look different in detail.</p>
+</header>
+
+<!-- 1 bid dashboard -->
+<section class="scene">
+  <div class="cap">
+    <h2>Bid dashboard that stays open while you talk</h2>
+    <p>The dashboard opens in the side panel in place of a link. Asking for a different tab or estimate changes the open page. The blue outline marks what Claude just changed.</p>
+    <div class="chips"><span class="chip gated">Side panel: limited organizations</span><span class="chip gated">App tools: limited organizations</span></div>
+  </div>
+  <div class="win">
+    <div class="bar"><i></i><i></i><i></i><span class="label">Claude &middot; wireframe</span></div>
+    <div class="body">
+      <div class="chat">
+        <div class="msg u">Show me the bid dashboard</div>
+        <div class="tool">FP MCP &middot; Open bid dashboard</div>
+        <div class="msg">The bid dashboard is open in the panel.</div>
+        <div class="msg u">Show coverage for E26-000</div>
+        <div class="tool">Bid dashboard &middot; Show estimate</div>
+        <div class="msg">Coverage is showing for E26-000.</div>
+        <div class="composer">Reply to Claude</div>
+      </div>
+      <div class="panel">
+        <div class="phead"><span>Bid dashboard</span><span class="label">Live &middot; BuildingConnected</span></div>
+        <div class="pbody">
+          <div class="tabs"><span class="tab">Deadlines</span><span class="tab on byclaude">Coverage</span><span class="tab">Estimates</span><span class="tab">Trends</span></div>
+          <div class="row"><span class="label">Estimate</span><span class="tab byclaude">E26-000 Sample Clinic</span></div>
+          <div class="scroll"><table>
+            <tr><th>Bid package</th><th>Invited</th><th>Bidding</th><th>Coverage</th></tr>
+            <tr><td>03 Concrete</td><td>6</td><td>4</td><td><span class="pill ok">Covered</span></td></tr>
+            <tr><td>09 Drywall</td><td>5</td><td>1</td><td><span class="pill warn">Thin</span></td></tr>
+            <tr><td>22 Plumbing</td><td>4</td><td>0</td><td><span class="pill crit">None</span></td></tr>
+            <tr><td>26 Electrical</td><td>7</td><td>3</td><td><span class="pill ok">Covered</span></td></tr>
+          </table></div>
+          <span class="fine">Counts only, no dollar amounts, as the dashboard works today.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 RFI -->
+<section class="scene">
+  <div class="cap">
+    <h2>Draft RFI you can see and edit before it is saved</h2>
+    <p>Today Claude summarises a draft in chat and asks for a yes. Here the draft is a form. Claude fills it, you correct it, and the Save button is the confirmation.</p>
+    <div class="chips"><span class="chip open">Inline view: available now</span><span class="chip gated">Side panel and app tools: limited organizations</span></div>
+  </div>
+  <div class="win">
+    <div class="bar"><i></i><i></i><i></i><span class="label">Claude &middot; wireframe</span></div>
+    <div class="body">
+      <div class="chat">
+        <div class="msg u">Draft an RFI on 25-000 about the ceiling height conflict in Room 204</div>
+        <div class="tool">FP MCP &middot; Open RFI draft</div>
+        <div class="tool">RFI draft &middot; Fill fields</div>
+        <div class="msg">The draft is in the panel with the subject, question and drawing reference filled in. Nothing is saved until you press Save draft.</div>
+        <div class="composer">Reply to Claude</div>
+      </div>
+      <div class="panel">
+        <div class="phead"><span>New RFI &middot; 25-000 Sample Office TI</span><span class="pill warn">Not saved</span></div>
+        <div class="pbody">
+          <div class="field"><span class="label">Subject</span><div class="box byclaude">Ceiling height conflict, Room 204</div></div>
+          <div class="field"><span class="label">Question</span><div class="box byclaude">A2.7 shows 9'-0" AFF in Room 204. The reflected ceiling plan on A6.1 shows 8'-6" AFF. Please confirm the finished ceiling height.</div></div>
+          <div class="two">
+            <div class="field"><span class="label">Drawing</span><div class="box byclaude">A2.7, A6.1</div></div>
+            <div class="field"><span class="label">RFI manager</span><div class="box">You</div></div>
+          </div>
+          <div class="row"><span class="btn pri">Save draft to Procore</span><span class="btn">Discard</span></div>
+          <span class="fine">Saves a draft only. It does not open, send or assign the RFI.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 drawings -->
+<section class="scene">
+  <div class="cap">
+    <h2>Drawing viewer with a button that talks to Claude</h2>
+    <p>The sheet stays open beside the chat and Claude can move to a sheet or region. A button in the view can hand a request back to Claude. It lands in your message box for you to send.</p>
+    <div class="chips"><span class="chip open">Messages: no gate stated</span><span class="chip gated">App tools: limited organizations</span></div>
+  </div>
+  <div class="win">
+    <div class="bar"><i></i><i></i><i></i><span class="label">Claude &middot; wireframe</span></div>
+    <div class="body">
+      <div class="chat">
+        <div class="msg u">Open A2.7 and zoom in on the northeast corner</div>
+        <div class="tool">Drawings &middot; Go to sheet</div>
+        <div class="msg">A2.7, revision 3, is showing the northeast corner.</div>
+        <div class="caution">Use caution before running this prompt. It came from the FP MCP view.</div>
+        <div class="composer filled">Draft an RFI about the area selected on sheet A2.7, Room 204.</div>
+      </div>
+      <div class="panel">
+        <div class="phead"><span>A2.7 &middot; Level 2 floor plan</span><span class="label">Rev 3 &middot; current</span></div>
+        <div class="pbody">
+          <div class="sheet"><svg viewBox="0 0 400 220" role="img" aria-label="Schematic floor plan with one room selected">
+            <rect x="12" y="12" width="376" height="196" fill="none" stroke="var(--ink-2)" stroke-width="2"/>
+            <path d="M150 12V120M12 120H250M250 120V208M250 70H388M300 12V70" fill="none" stroke="var(--ink-2)" stroke-width="1.5"/>
+            <text x="60" y="70">201 OPEN OFFICE</text><text x="185" y="70">202 CONF</text><text x="322" y="44">204</text><text x="290" y="145">203 BREAK</text><text x="90" y="170">CORRIDOR</text>
+            <rect x="302" y="14" width="84" height="54" fill="var(--accent)" fill-opacity=".14" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3"/>
+          </svg></div>
+          <div class="row"><span class="btn">A2.6</span><span class="btn">A2.8</span><span class="btn">Zoom</span><span class="btn pri">Ask Claude about this area</span></div>
+          <span class="fine">Not to scale. The viewer is for reading, not measuring.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 staffing -->
+<section class="scene">
+  <div class="cap">
+    <h2>Staffing board with a what-if</h2>
+    <p>The same load bands the weekly schedule uses: under 90% is room, 90 to 125% is normal, 125 to 150% is a stretch, over 150% is overload. Picking a candidate for an unassigned job outlines the weeks it would push them over.</p>
+    <div class="chips"><span class="chip open">Inline and full screen: available now</span><span class="chip gated">Pinned app: limited organizations</span></div>
+  </div>
+  <div class="win">
+    <div class="bar"><i></i><i></i><i></i><span class="label">Claude &middot; wireframe</span></div>
+    <div class="body solo">
+      <div class="panel" style="border-left:0">
+        <div class="phead"><span>Staffing board</span><span class="label">Internal &middot; restricted logins</span></div>
+        <div class="pbody">
+          <div class="tabs"><span class="tab on">Load</span><span class="tab">Needs a superintendent</span><span class="tab">Timeline</span><span class="tab">Check with the PM</span></div>
+          <div class="scroll"><div class="heat">
+            <div class="n h">Week of</div><div class="h">11/16</div><div class="h">11/23</div><div class="h">11/30</div><div class="h">12/7</div><div class="h">12/14</div><div class="h">12/21</div><div class="h">12/28</div><div class="h">1/4</div>
+            <div class="n">Super A</div><div class="g">110</div><div class="g">110</div><div class="g">110</div><div class="y">135</div><div class="y">135</div><div class="g">100</div><div class="g">100</div><div class="lo">60</div>
+            <div class="n">Super B</div><div class="lo">70</div><div class="lo">70</div><div class="g">95</div><div class="g">95</div><div class="g">95</div><div class="lo">50</div><div class="lo">50</div><div class="lo">50</div>
+            <div class="n">Super C</div><div class="r">160</div><div class="r">160</div><div class="y">140</div><div class="g">120</div><div class="g">120</div><div class="g">120</div><div class="g">90</div><div class="g">90</div>
+            <div class="n">Super D</div><div class="g">100</div><div class="g">100</div><div class="g push">125</div><div class="y push">145</div><div class="y push">145</div><div class="g push">120</div><div class="g">100</div><div class="g">100</div>
+          </div></div>
+          <div class="card">
+            <span class="label">Needs a superintendent</span>
+            <b>25-000 Sample Clinic &middot; starts 11/30, 4 weeks</b>
+            <div class="opt"><span>Super B</span><span class="pill ok">Comfortable</span></div>
+            <div class="opt sel"><span>Super D &middot; selected, 2 weeks over 125%</span><span class="pill warn">Stretch</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 weekly update -->
+<section class="scene">
+  <div class="cap">
+    <h2>Owner weekly update: preview, pick photos, download</h2>
+    <p>The letter is previewed as it will print. You choose the photos, warnings clear as the content is fixed, and the Word file downloads from the view after you confirm.</p>
+    <div class="chips"><span class="chip open">Downloads: where Claude offers them</span><span class="chip gated">Side panel: limited organizations</span></div>
+  </div>
+  <div class="win">
+    <div class="bar"><i></i><i></i><i></i><span class="label">Claude &middot; wireframe</span></div>
+    <div class="body">
+      <div class="chat">
+        <div class="msg u">Build this week's Owner update for 25-000</div>
+        <div class="tool">FP MCP &middot; Open weekly update</div>
+        <div class="msg">The letter is in the panel. One caption was missing, and I've added it. Pick up to six photos, then download.</div>
+        <div class="dialog">
+          <b>Download file</b>
+          <span>Weekly Update 25-000 2026-11-13.docx</span>
+          <div class="row"><span class="btn pri">Download</span><span class="btn">Cancel</span></div>
+        </div>
+        <div class="composer">Reply to Claude</div>
+      </div>
+      <div class="panel">
+        <div class="phead"><span>Weekly update &middot; week ending 11/13</span><span class="pill ok">0 warnings</span></div>
+        <div class="pbody">
+          <div class="paper">
+            <b>Weekly Update &middot; Sample Office TI</b>
+            <span><b>Summary.</b> Framing on Level 2 is complete and overhead rough-in is under way.</span>
+            <span><b>Progress this week.</b> Level 2 framing inspected. Overhead plumbing 60% roughed in.</span>
+            <span><b>Planned next week.</b> Electrical rough-in starts Monday. Drywall delivery Thursday.</span>
+          </div>
+          <span class="label">Starred photos &middot; 3 of 6 selected</span>
+          <div class="ph"><span class="sel"></span><span class="sel"></span><span></span><span class="sel"></span><span></span></div>
+          <div class="row"><span class="btn pri">Download Word file</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 pinned + mobile -->
+<section class="scene">
+  <div class="cap">
+    <h2>Pinned in the sidebar, and cards on a phone</h2>
+    <p>Marked tools appear on the Artifacts page and can be pinned, so the dashboards open without typing a prompt. On mobile there is no side panel, so views show as cards in the conversation.</p>
+    <div class="chips"><span class="chip gated">Entry points: limited organizations</span><span class="chip open">Mobile inline cards: available now</span></div>
+  </div>
+  <div class="duo">
+    <div class="win">
+      <div class="bar"><i></i><i></i><i></i><span class="label">Claude &middot; wireframe</span></div>
+      <div class="side">
+        <div class="rail">
+          <span class="label">Pinned</span>
+          <span class="it pin">Bid dashboard</span><span class="it pin">Staffing board</span><span class="it pin">Drawings</span>
+          <span class="label" style="margin-top:8px">Recents</span>
+          <span class="it">RFI on Room 204</span><span class="it">Weekly update</span>
+        </div>
+        <div class="tiles">
+          <div class="tile"><b>Bid dashboard</b><small>FP MCP</small></div>
+          <div class="tile"><b>Staffing board</b><small>FP MCP</small></div>
+          <div class="tile"><b>Drawings</b><small>FP MCP</small></div>
+          <div class="tile"><b>Project home</b><small>FP MCP</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="msg u" style="font-size:12px">Punch list on 25-000?</div>
+      <div class="card">
+        <span class="label">Punch list &middot; 25-000</span>
+        <div class="opt"><span>Open</span><span class="pill warn">12</span></div>
+        <div class="opt"><span>Ready for review</span><span class="pill ok">5</span></div>
+        <div class="row"><span class="btn">By trade</span><span class="btn">By area</span></div>
+      </div>
+      <div class="ph"><span></span><span></span><span></span></div>
+      <div class="composer" style="font-size:12px">Reply to Claude</div>
+    </div>
+  </div>
+</section>
+
+<section class="text">
+  <h2>What each piece needs</h2>
+  <div class="scroll"><table>
+    <tr><th>Capability</th><th>What it gives FP MCP</th><th>Access for a custom connector</th></tr>
+    <tr><td>Inline view</td><td>A view rendered in the conversation</td><td><span class="pill ok">No gate stated</span></td></tr>
+    <tr><td>Side panel, full screen</td><td>The view stays open beside the chat</td><td><span class="pill warn">Limited organizations</span> Falls back to full screen</td></tr>
+    <tr><td>Entry points</td><td>Open from the Artifacts page, pin to the sidebar</td><td><span class="pill warn">Limited organizations</span></td></tr>
+    <tr><td>App tools</td><td>Claude changes what the open view shows</td><td><span class="pill warn">Limited organizations</span></td></tr>
+    <tr><td>Messages</td><td>A button in the view sends Claude a request</td><td><span class="pill ok">No gate stated</span> You agree to each message</td></tr>
+    <tr><td>Downloads</td><td>The view saves a file to your device</td><td><span class="pill ok">Where offered</span> You confirm each download</td></tr>
+    <tr><td>Embedded sites</td><td>An FP-owned website inside the view</td><td><span class="pill warn">Limited organizations</span> You allow each site</td></tr>
+  </table></div>
+  <p class="fine">Gated features also need the combined chat and Cowork experience on the account. When access is missing they simply do not appear, so the current links should stay as the fallback.</p>
+</section>
+
+<div class="grid2">
+  <section class="text">
+    <h2>Rules that shape the build</h2>
+    <ul>
+      <li>A Save button in a view runs without Claude's approval prompt, so the button has to be the confirmation.</li>
+      <li>Embedding a site switches off clipboard write, camera and location for every FP MCP view. Building native views avoids that.</li>
+      <li>The current claude.ai bid dashboard page cannot be embedded, and neither can Procore or BuildingConnected.</li>
+      <li>A view starts fresh on reload, so drafts need to be held on the server.</li>
+      <li>The features are in public preview and details may change.</li>
+    </ul>
+  </section>
+  <section class="text">
+    <h2>Suggested order</h2>
+    <ol>
+      <li>Port the staffing board to a view. It is already a server-built page and needs no gated access.</li>
+      <li>Add a pin, the side-panel preference and one Claude-callable action to it. That shows whether FP's organization has access.</li>
+      <li>Build the draft RFI editor as the first write flow.</li>
+      <li>Build the drawing viewer.</li>
+    </ol>
+  </section>
+</div>
+</div>
+
+</body>
+</html>
